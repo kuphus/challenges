@@ -1,5 +1,5 @@
 import os
-import time
+
 
 
 array_of_arrays = [[1]]
@@ -15,36 +15,32 @@ def get_input():
 
 def add_right(current, length):
     for i in range(current+1, current+length+1):
-        print("right ", i)
         array_of_arrays[-1].append(i)
 
 
 def add_left(current, length):
     for i in range(current+1, current+length+1):
-        print("left ", i)
         array_of_arrays[0].insert(0,i)
 
 
 def add_down(current, length):
-    print("current: ", current, " length ", length)
-    for array, i in zip(array_of_arrays[1:], range(current+1, current+length+1)):
-        print("down ", i)
-        if i == (current + length):
-            print("voeg array toe onderin")       
+    array_index = 1
+    for i in range(current+1, current+length+1):
+        if i == (current + length):  
             array_of_arrays.append([i])
         else:
-            array.insert(0,i)           
+            array_of_arrays[array_index].insert(0,i)           
+            array_index += 1
 
 
-def add_up(current, length):
-    print("current: ", current, " length ", length)  
-    for array, i in zip(array_of_arrays[:-1:-1], range(current+1, current+length+1)):
-        print("up ", i)
+def add_up(current, length):  
+    array_index =  -2 
+    for i in range(current+1, current+length+1):
         if i == (current + length):
-            print("voeg array toe bovenin") 
             array_of_arrays.insert(0,[i])
         else:
-            array.append(i)   
+            array_of_arrays[array_index].append(i)   
+            array_index -= 1
                    
 
 def fill_array_of_arrays(max_number):
@@ -83,6 +79,22 @@ def fill_array_of_arrays(max_number):
         length += 1          
 
 
+def get_array_width():
+    width = 0
+    for array in array_of_arrays:
+        if len(array)>width:
+            width = len(array)
+    return width
+
+
+def equalize_array():
+    max_width = get_array_width()
+    for array in array_of_arrays:
+        size_difference = max_width - len(array)
+        for i in range(1, size_difference):
+            array.insert(0," ")
+
+
 def print_array():
     #cls()
     for array in array_of_arrays:
@@ -93,7 +105,7 @@ def print_array():
 def start():
     number = get_input()
     fill_array_of_arrays(number)
-    time.sleep(5)
+    equalize_array()
     print_array()
 
 
